@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = "https://api.github.com/repos/ReactiveX/RxJava/issues";
     ArrayList<Issue> issuesArray;
     ListView lvResults;
-    ArrayAdapter<Issue> adapter;
+    IssuesAdapter issuesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         lvResults = (ListView) findViewById(R.id.lvResults);
         issuesArray = new ArrayList<Issue>();
-        adapter = new ArrayAdapter<Issue>(this,
-                android.R.layout.simple_list_item_1, issuesArray);
-        lvResults.setAdapter(adapter);
-        
+        issuesAdapter = new IssuesAdapter(this, issuesArray);
+        lvResults.setAdapter(issuesAdapter);
+
         AsyncHttpClient client = new AsyncHttpClient();
         client.setUserAgent("ckashby");
         RequestParams params = new RequestParams();
-        params.put("User-Agent", "ckashby");
         params.put("url", "url");
         params.put("title", "title");
         client.get(BASE_URL, params, new JsonHttpResponseHandler() {
@@ -46,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseArray) {
                 // called when response HTTP status is "200"
                 try {
-                    issuesArray = Issue.fromJsonArray(responseArray);
-                    adapter.notifyDataSetChanged();
+                    issuesAdapter.addAll(Issue.fromJsonArray(responseArray));
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
