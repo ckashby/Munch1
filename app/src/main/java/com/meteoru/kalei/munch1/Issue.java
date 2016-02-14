@@ -47,7 +47,7 @@ public class Issue {
     }
 
     public static ArrayList<Issue> fromJsonArray(JSONArray jsonArray) {
-        ArrayList<Issue> issues = new ArrayList<Issue>(jsonArray.length());
+        ArrayList<Issue> issues = new ArrayList<>(jsonArray.length());
         // Process each result in json array, decode and convert to Issue object
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject issueJson = null;
@@ -56,9 +56,9 @@ public class Issue {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Issue issue = new Issue.fromJson(issueJson);
-            if (issue != null) {
-                issues.add(issue);
+            Issue myIssue = Issue.fromJson(issueJson);
+            if (myIssue != null) {
+                issues.add(myIssue);
             }
         }
         return issues;

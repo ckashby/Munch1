@@ -10,11 +10,14 @@ import android.view.MenuItem;
 import com.loopj.android.http.*;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
-    private String BASE_URL = "https://api.github.com/repos/ReactiveX/RxJava/issues";
+    public static final String BASE_URL = "https://api.github.com/repos/ReactiveX/RxJava/issues";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,24 +25,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setUserAgent("ckashby");
         RequestParams params = new RequestParams();
+        params.put("User-Agent", "ckashby");
         params.put("url", "url");
         params.put("title", "title");
         client.get(BASE_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseArray) {
                 // called when response HTTP status is "200"
-                String response = "testing";
-                response = responseArray.toString();
-                Log.d("CLAY", response);
+                Log.d("CLAY", responseArray.toString());
+                ArrayList<Issue> issuesArray = new ArrayList<Issue>();
+                for (int i = 0; i < responseArray.length(); i++) {
 
+                }
 
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-
 
             }
         });
