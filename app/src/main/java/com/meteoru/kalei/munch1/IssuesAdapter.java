@@ -29,7 +29,7 @@ public class IssuesAdapter extends ArrayAdapter<Issue> {
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         tvTitle.setText(issue.getTitle());
-        tvBody.setText(issue.getBody());
+        tvBody.setText(Utils.formatBody(issue.getBody()));
         return convertView;
     }
 }
