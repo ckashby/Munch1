@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         client.setUserAgent("ckashby");
         RequestParams params = new RequestParams();
-        params.put("url", "url");
-        params.put("title", "title");
         client.get(BASE_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseArray) {
@@ -67,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, DetailsActivity.class);
                 i.putExtra("title", issue.getTitle());
                 i.putExtra("url", issue.getUrl());
+                i.putExtra("comments_url", issue.getComments_url());
+                i.putExtra("html_url", issue.getHtml_url());
+                i.putExtra("user_login", issue.getUser_login());
+                i.putExtra("state", issue.getState());
                 startActivity(i);
             }
         });

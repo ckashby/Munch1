@@ -7,31 +7,34 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Issue {
-    public String url;
-    public String title;
+    public String url, title, comments_url, html_url, user_login, state;
 
     public Issue() {}
 
-    public Issue(String url, String title) {
+    public Issue(String url, String title, String comments_url, String html_url,
+                 String user_login, String state) {
         this.url = url;
         this.title = title;
+        this.comments_url = comments_url;
+        this.html_url = html_url;
+        this.user_login = user_login;
+        this.state = state;
+
     }
 
-    public String getUrl() {
-        return url;
-    }
+    public String getUrl() { return url; }
+    public String getTitle() { return title; }
+    public String getComments_url() { return comments_url; }
+    public String getHtml_url() { return  html_url; }
+    public String getUser_login() { return user_login; }
+    public String getState() { return state; }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setUrl(String url) { this.url = url; }
+    public void setTitle(String title) { this.title = title; }
+    public void setComments_url(String comments_url) { this.comments_url = comments_url; }
+    public void setHtml_url(String html_url) { this.html_url = html_url; }
+    public void setUser_login(String user_login) { this.user_login = user_login; }
+    public void setState(String state) { this.state = state; }
 
     public static Issue fromJson(JSONObject jsonObject) {
         Issue issue = new Issue();
@@ -39,6 +42,10 @@ public class Issue {
         try {
             issue.setUrl(jsonObject.getString("url"));
             issue.setTitle(jsonObject.getString("title"));
+            issue.setComments_url(jsonObject.getString("comments_url"));
+            issue.setHtml_url(jsonObject.getString("html_url"));
+            issue.setUser_login(jsonObject.getJSONObject("user").getString("login"));
+            issue.setState(jsonObject.getString("state"));
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

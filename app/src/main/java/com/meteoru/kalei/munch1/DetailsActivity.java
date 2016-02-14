@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 public class DetailsActivity extends AppCompatActivity {
-    TextView tvTitle, tvUrl;
+    TextView tvTitle, tvUrl, tvComments_url, tvHtml_url, tvUser_login,
+            tvState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,12 +19,21 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvUrl = (TextView) findViewById(R.id.tvUrl);
+        tvComments_url = (TextView) findViewById(R.id.tvComments_url);
+        tvHtml_url = (TextView) findViewById(R.id.tvHtml_url);
+        tvUser_login = (TextView) findViewById(R.id.tvUser_login);
+        tvState = (TextView) findViewById(R.id.tvState);
+
         Bundle stuff = getIntent().getExtras();
         tvTitle.setText(stuff.getString("title", "Default Title"));
-        tvUrl.setText(stuff.getString("url", "http://something.com"));
-
+        tvUrl.setText(stuff.getString("url", "https://something.com"));
+        tvComments_url.setText(stuff.getString("comments_url", "https://something.com"));
+        tvHtml_url.setText(stuff.getString("html_url", "https://something.com"));
+        tvUser_login.setText(stuff.getString("user_login", "Joe Jackson"));
+        tvState.setText(stuff.getString("state", "State not found"));
 
     }
 

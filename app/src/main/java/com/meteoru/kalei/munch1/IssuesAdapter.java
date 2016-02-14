@@ -27,9 +27,9 @@ public class IssuesAdapter extends ArrayAdapter<Issue> {
         }
         // Get references and populate views
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-        TextView tvUrl = (TextView) convertView.findViewById(R.id.tvUrl);
+//        TextView tvUrl = (TextView) convertView.findViewById(R.id.tvUrl);
         tvTitle.setText(issue.getTitle());
-        tvUrl.setText(issue.getUrl());
+//        tvUrl.setText(issue.getUrl());
         return convertView;
     }
 }
