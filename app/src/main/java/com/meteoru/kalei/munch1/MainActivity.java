@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.loopj.android.http.*;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseArray) {
                 // called when response HTTP status is "200"
-                Log.d("CLAY", responseArray.toString());
                 ArrayList<Issue> issuesArray = new ArrayList<Issue>();
-                for (int i = 0; i < responseArray.length(); i++) {
-
+                try {
+                    issuesArray = Issue.fromJsonArray(responseArray);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                Log.d("CLAY", issuesArray.toString());
 
             }
             @Override
