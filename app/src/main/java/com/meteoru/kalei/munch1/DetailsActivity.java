@@ -8,9 +8,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+
 public class DetailsActivity extends AppCompatActivity {
-    TextView tvTitle, tvUrl, tvComments_url, tvHtml_url, tvUser_login,
-            tvState, tvUpdatedAt, tvBody;
+    TextView tvTitle, tvBody, tvComments;
+    Bundle stuff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,23 +31,43 @@ public class DetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvUrl = (TextView) findViewById(R.id.tvUrl);
-        tvComments_url = (TextView) findViewById(R.id.tvComments_url);
-        tvHtml_url = (TextView) findViewById(R.id.tvHtml_url);
-        tvUser_login = (TextView) findViewById(R.id.tvUser_login);
-        tvState = (TextView) findViewById(R.id.tvState);
-        tvUpdatedAt = (TextView) findViewById(R.id.tvUpdatedAt);
         tvBody = (TextView) findViewById(R.id.tvBody);
+        tvComments = (TextView) findViewById(R.id.tvComments);
 
-        Bundle stuff = getIntent().getExtras();
-        tvTitle.setText(stuff.getString("title", "Default Title"));
-        tvUrl.setText(stuff.getString("url", "https://something.com"));
-        tvComments_url.setText(stuff.getString("comments_url", "https://something.com"));
-        tvHtml_url.setText(stuff.getString("html_url", "https://something.com"));
-        tvUser_login.setText(stuff.getString("user_login", "Joe Jackson"));
-        tvState.setText(stuff.getString("state", "State not found"));
-        tvUpdatedAt.setText(stuff.getString("updated_at", "Update time not found"));
-        tvBody.setText(stuff.getString("body", "Body not found.").subSequence(0, 139));
+        stuff = getIntent().getExtras();
+        tvTitle.setText(stuff.getString("title", "Title not found."));
+        tvBody.setText(stuff.getString("body", "Body not found."));
+
+        fetchComments();
+    }
+
+    private void fetchComments() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setUserAgent("ckashby");
+        RequestParams params = new RequestParams();
+        String url = stuff.getString("comments_url");
+        client.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray responseArray) {
+                StringBuilder stringBuilder = new StringBuilder();
+                String formatString = "comment:%s\nauthor:%s\n";
+                for (int i = 0; i < responseArray.length(); i++) {
+                    try {
+                        String author = responseArray.getJSONObject(i).getJSONObject("user").getString("login");
+                        String comment = responseArray.getJSONObject(i).getString("body");
+                        stringBuilder.append(String.format(formatString, comment, author));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                tvComments.setText(stringBuilder.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
     }
 
 }
