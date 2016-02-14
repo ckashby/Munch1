@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class DetailsActivity extends AppCompatActivity {
     TextView tvTitle, tvUrl, tvComments_url, tvHtml_url, tvUser_login,
-            tvState;
+            tvState, tvUpdatedAt, tvBody;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,8 @@ public class DetailsActivity extends AppCompatActivity {
         tvHtml_url = (TextView) findViewById(R.id.tvHtml_url);
         tvUser_login = (TextView) findViewById(R.id.tvUser_login);
         tvState = (TextView) findViewById(R.id.tvState);
+        tvUpdatedAt = (TextView) findViewById(R.id.tvUpdatedAt);
+        tvBody = (TextView) findViewById(R.id.tvBody);
 
         Bundle stuff = getIntent().getExtras();
         tvTitle.setText(stuff.getString("title", "Default Title"));
@@ -34,7 +36,8 @@ public class DetailsActivity extends AppCompatActivity {
         tvHtml_url.setText(stuff.getString("html_url", "https://something.com"));
         tvUser_login.setText(stuff.getString("user_login", "Joe Jackson"));
         tvState.setText(stuff.getString("state", "State not found"));
-
+        tvUpdatedAt.setText(stuff.getString("updated_at", "Update time not found"));
+        tvBody.setText(stuff.getString("body", "Body not found."));
     }
 
 }

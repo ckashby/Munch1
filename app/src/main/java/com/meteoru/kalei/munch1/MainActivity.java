@@ -18,7 +18,6 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import java.util.ArrayList;
 
-
 public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = "https://api.github.com/repos/ReactiveX/RxJava/issues";
     ArrayList<Issue> issuesArray;
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 // called when response HTTP status is "200"
                 try {
                     issuesAdapter.addAll(Issue.fromJsonArray(responseArray));
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -58,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Request for JSON data failed.", Toast.LENGTH_LONG).show();
             }
         });
+
         lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -69,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("html_url", issue.getHtml_url());
                 i.putExtra("user_login", issue.getUser_login());
                 i.putExtra("state", issue.getState());
+                i.putExtra("updated_at", issue.getUpdated_at());
+                i.putExtra("body", issue.getBody());
                 startActivity(i);
             }
         });
