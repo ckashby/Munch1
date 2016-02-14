@@ -6,19 +6,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.loopj.android.http.*;
-
+import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = "https://api.github.com/repos/ReactiveX/RxJava/issues";
+    ArrayList<Issue> issuesArray;
+    ListView lvResults;
+    ArrayAdapter<Issue> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        lvResults = (ListView) findViewById(R.id.lvResults);
+        issuesArray = new ArrayList<Issue>();
+        adapter = new ArrayAdapter<Issue>(this,
+                android.R.layout.simple_list_item_1, issuesArray);
+        lvResults.setAdapter(adapter);
+        
         AsyncHttpClient client = new AsyncHttpClient();
         client.setUserAgent("ckashby");
         RequestParams params = new RequestParams();
@@ -37,19 +45,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseArray) {
                 // called when response HTTP status is "200"
-                ArrayList<Issue> issuesArray = new ArrayList<Issue>();
                 try {
                     issuesArray = Issue.fromJsonArray(responseArray);
+                    adapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.d("CLAY", issuesArray.toString());
-
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-
+                Toast.makeText(getBaseContext(), "Request for JSON data failed.", Toast.LENGTH_LONG).show();
             }
         });
     }

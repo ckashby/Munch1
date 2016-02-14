@@ -55,6 +55,7 @@ public class Issue {
                 issueJson = jsonArray.getJSONObject(i);
             } catch (JSONException e) {
                 e.printStackTrace();
+                continue;
             }
             Issue myIssue = Issue.fromJson(issueJson);
             if (myIssue != null) {
