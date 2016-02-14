@@ -37,7 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
         tvUser_login.setText(stuff.getString("user_login", "Joe Jackson"));
         tvState.setText(stuff.getString("state", "State not found"));
         tvUpdatedAt.setText(stuff.getString("updated_at", "Update time not found"));
-        tvBody.setText(stuff.getString("body", "Body not found."));
+        tvBody.setText(stuff.getString("body", "Body not found.").subSequence(0, 139));
     }
 
 }
