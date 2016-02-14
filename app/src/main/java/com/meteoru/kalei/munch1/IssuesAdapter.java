@@ -25,11 +25,11 @@ public class IssuesAdapter extends ArrayAdapter<Issue> {
             convertView = LayoutInflater.from(getContext())
                     .inflate(R.layout.item_issue, parent, false);
         }
+        // Get references and populate views
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
         TextView tvUrl = (TextView) convertView.findViewById(R.id.tvUrl);
         tvTitle.setText(issue.getTitle());
         tvUrl.setText(issue.getUrl());
-        // Return the completed view to render list of objects
         return convertView;
     }
 }
